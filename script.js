@@ -53,18 +53,29 @@ function replaceLastBotMessage(text) {
 
 async function getAIReply(message) {
   try {
-    const response = await fetch("https://loodgieter-chatbot-api.mostapha-elidrissi3.workers.dev/", {
+    const response = await fetch("https://loodgieter-chatbot-api.mostapha-elidrissi3.workers.dev", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
       },
-      body: JSON.stringify({ message })
+      body: JSON.stringify({ message: message })
     });
 
+    if (!response.ok) {
+      return "De AI-worker gaf een fout terug.";
+    }
+
     const data = await response.json();
-    return data.reply || "Geen antwoord ontvangen van de AI.";
+
+    if (data.reply) {
+      return data.reply;
+    } else if (data.error) {
+      return "AI-fout: " + data.error;
+    } else {
+      return "Geen geldig AI-antwoord ontvangen.";
+    }
   } catch (error) {
-    return "Er ging iets mis bij het verbinden met de AI.";
+    return "Er ging iets mis met de AI-verbinding.";
   }
 }
 
@@ -103,12 +114,12 @@ function submitLeadForm(type) {
   }
 
   const leadData = {
-    type,
-    name,
-    email,
-    phone,
-    postcode,
-    message,
+    type: type,
+    name: name,
+    email: email,
+    phone: phone,
+    postcode: postcode,
+    message: message,
     date: new Date().toLocaleString()
   };
 
@@ -118,7 +129,7 @@ function submitLeadForm(type) {
 
   const success = document.createElement("div");
   success.className = "success-box";
-  success.textContent = `Bedankt ${name}, je aanvraag is goed ontvangen. We nemen snel contact met je op.`;
+  success.textContent = "Bedankt " + name + ", je aanvraag is goed ontvangen. We nemen snel contact met je op.";
 
   chatbox.appendChild(success);
   chatbox.scrollTop = chatbox.scrollHeight;

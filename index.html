@@ -3,23 +3,34 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Chatbot demo loodgieter</title>
+  <title>Loodgieter Chatbot Demo</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="container">
+  <div class="chat-container">
     <h1>Loodgieter Chatbot Demo</h1>
     <p>Stel een vraag zoals: prijs, openingsuren, regio, offerte of dringend lek.</p>
 
-    <div id="chatbox" class="chatbox">
-      <div class="bot">Hallo, ik ben de chatbot van de loodgieter. Hoe kan ik je helpen?</div>
-    </div>
+    <div id="chatbox" class="chatbox"></div>
 
     <div class="input-area">
-      <input type="text" id="userInput" placeholder="Typ je vraag...">
+      <input
+        type="text"
+        id="userInput"
+        placeholder="Typ je vraag..."
+        onkeypress="handleKeyPress(event)"
+      >
       <button onclick="sendMessage()">Verstuur</button>
     </div>
   </div>
+
+  <script>
+    function handleKeyPress(event) {
+      if (event.key === "Enter") {
+        sendMessage();
+      }
+    }
+  </script>
 
   <script src="script.js"></script>
 </body>

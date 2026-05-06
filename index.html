@@ -14,23 +14,10 @@
     <div id="chatbox" class="chatbox"></div>
 
     <div class="input-area">
-      <input
-        type="text"
-        id="userInput"
-        placeholder="Typ je vraag..."
-        onkeypress="handleKeyPress(event)"
-      >
-      <button onclick="sendMessage()">Verstuur</button>
+      <input type="text" id="userInput" placeholder="Typ je vraag...">
+      <button id="sendBtn" type="button">Verstuur</button>
     </div>
   </div>
-
-  <script>
-    function handleKeyPress(event) {
-      if (event.key === "Enter") {
-        sendMessage();
-      }
-    }
-  </script>
 
   <script src="script.js"></script>
 </body>

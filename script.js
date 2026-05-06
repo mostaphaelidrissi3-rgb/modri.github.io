@@ -67,12 +67,7 @@ async function getAIReply(message) {
 
     const data = await response.json();
 
-    if (data.reply) {
-      return data.reply;
-    } else if (data.error) {
-      return "AI-fout: " + data.error;
-    } else {
-      return "Geen geldig AI-antwoord ontvangen.";
+    return JSON.stringify(data);
     }
   } catch (error) {
     return "Er ging iets mis met de AI-verbinding.";

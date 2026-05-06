@@ -1,26 +1,28 @@
 let leadFormShown = false;
 
-async function sendMessage() {
+function sendMessage() {
   const input = document.getElementById("userInput");
   const message = input.value.trim();
+  const lowerMessage = message.toLowerCase();
 
   if (!message) return;
 
   addUserMessage(message);
 
-  const lowerMessage = message.toLowerCase();
-
-  if (lowerMessage.includes("offerte")) {
+  if (lowerMessage.includes("prijs")) {
+    addBotMessage("Onze interventies starten vanaf €90. Voor een exacte prijs maken we graag een offerte.");
+  } else if (lowerMessage.includes("open") || lowerMessage.includes("uren")) {
+    addBotMessage("Wij zijn bereikbaar van maandag tot vrijdag van 8u tot 18u.");
+  } else if (lowerMessage.includes("regio") || lowerMessage.includes("brussel") || lowerMessage.includes("antwerpen")) {
+    addBotMessage("Wij werken in Brussel, Antwerpen en omliggende gemeenten.");
+  } else if (lowerMessage.includes("offerte")) {
     addBotMessage("Prima, vul hieronder je gegevens in voor een offerte.");
     showLeadForm("offerte");
   } else if (lowerMessage.includes("lek") || lowerMessage.includes("dringend")) {
     addBotMessage("Dat klinkt dringend. Vul hieronder je gegevens in en we contacteren je zo snel mogelijk.");
     showLeadForm("dringend");
   } else {
-    addBotMessage("Even nadenken...");
-
-    const reply = await getAIReply(message);
-    replaceLastBotMessage(reply);
+    addBotMessage("Sorry, ik begrijp je nog niet helemaal. Vraag gerust naar prijs, openingsuren, regio, offerte of een dringend lek.");
   }
 
   input.value = "";
@@ -42,36 +44,6 @@ function addBotMessage(text) {
   botDiv.textContent = text;
   chatbox.appendChild(botDiv);
   chatbox.scrollTop = chatbox.scrollHeight;
-}
-
-function replaceLastBotMessage(text) {
-  const botMessages = document.querySelectorAll(".bot");
-  if (botMessages.length > 0) {
-    botMessages[botMessages.length - 1].textContent = text;
-  }
-}
-
-async function getAIReply(message) {
-  try {
-    const response = await fetch("https://loodgieter-chatbot-api.mostapha-elidrissi3.workers.dev", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({ message: message })
-    });
-
-    if (!response.ok) {
-      return "De AI-worker gaf een fout terug.";
-    }
-
-    const data = await response.json();
-
-    return JSON.stringify(data);
-    }
-  } catch (error) {
-    return "Er ging iets mis met de AI-verbinding.";
-  }
 }
 
 function showLeadForm(type) {
@@ -109,12 +81,12 @@ function submitLeadForm(type) {
   }
 
   const leadData = {
-    type: type,
-    name: name,
-    email: email,
-    phone: phone,
-    postcode: postcode,
-    message: message,
+    type,
+    name,
+    email,
+    phone,
+    postcode,
+    message,
     date: new Date().toLocaleString()
   };
 
@@ -124,7 +96,7 @@ function submitLeadForm(type) {
 
   const success = document.createElement("div");
   success.className = "success-box";
-  success.textContent = "Bedankt " + name + ", je aanvraag is goed ontvangen. We nemen snel contact met je op.";
+  success.textContent = `Bedankt ${name}, je aanvraag is goed ontvangen. We nemen snel contact met je op.`;
 
   chatbox.appendChild(success);
   chatbox.scrollTop = chatbox.scrollHeight;

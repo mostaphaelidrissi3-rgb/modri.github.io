@@ -60,7 +60,7 @@ function showLeadForm(type) {
     <input type="text" id="leadPhone" placeholder="Je telefoonnummer">
     <input type="text" id="leadPostcode" placeholder="Je postcode">
     <textarea id="leadMessage" placeholder="Korte beschrijving" rows="3"></textarea>
-    <button onclick="submitLeadForm('${type}')">Verzend aanvraag</button>
+    <button type="button" onclick="submitLeadForm('${type}')">Verzend aanvraag</button>
   `;
 
   chatbox.appendChild(formWrapper);
@@ -81,12 +81,12 @@ function submitLeadForm(type) {
   }
 
   const leadData = {
-    type,
-    name,
-    email,
-    phone,
-    postcode,
-    message,
+    type: type,
+    name: name,
+    email: email,
+    phone: phone,
+    postcode: postcode,
+    message: message,
     date: new Date().toLocaleString()
   };
 
@@ -96,10 +96,27 @@ function submitLeadForm(type) {
 
   const success = document.createElement("div");
   success.className = "success-box";
-  success.textContent = `Bedankt ${name}, je aanvraag is goed ontvangen. We nemen snel contact met je op.`;
+  success.textContent = "Bedankt " + name + ", je aanvraag is goed ontvangen. We nemen snel contact met je op.";
 
   chatbox.appendChild(success);
   chatbox.scrollTop = chatbox.scrollHeight;
 
   leadFormShown = false;
 }
+
+document.addEventListener("DOMContentLoaded", function () {
+  const sendBtn = document.getElementById("sendBtn");
+  const userInput = document.getElementById("userInput");
+
+  if (sendBtn) {
+    sendBtn.addEventListener("click", sendMessage);
+  }
+
+  if (userInput) {
+    userInput.addEventListener("keypress", function (event) {
+      if (event.key === "Enter") {
+        sendMessage();
+      }
+    });
+  }
+});

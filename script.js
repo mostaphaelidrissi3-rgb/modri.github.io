@@ -53,7 +53,7 @@ function replaceLastBotMessage(text) {
 
 async function getAIReply(message) {
   try {
-    const response = await fetch(https://loodgieter-chatbot-api.mostapha-elidrissi3.workers.dev/, {
+    const response = await fetch("https://loodgieter-chatbot-api.mostapha-elidrissi3.workers.dev/", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
